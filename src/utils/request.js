@@ -3,13 +3,14 @@ import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
-// create an axios instance
+// axios实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 5000 // request timeout
 })
-
-// request interceptor
+// post请求头的设置
+service.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
+// 响应拦截器
 service.interceptors.request.use(
   config => {
     if (store.getters.token) {
@@ -26,7 +27,6 @@ service.interceptors.request.use(
   }
 )
 
-// response interceptor
 service.interceptors.response.use(
   response => {
     const res = response.data
@@ -67,5 +67,14 @@ service.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
-export default service
+const _requset = (url, data, method, config = {}) => {
+  return new Promise((resolve, reject) => {
+    const setobj = method !== 'get' ? { method, url, data, ...config } : { method, url, params: data, ...config }
+    service(setobj).then(response => {
+      resolve(response)
+    }).catch(error => {
+      reject(error)
+    })
+  })
+}
+export default _requset
