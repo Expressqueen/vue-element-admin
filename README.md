@@ -3,7 +3,7 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/PanJiaChen/vue-element-admin.git
+git clone https://github.com/Expressqueen/vue-element-admin.git
 
 # 进入克隆项目
 cd vue-element-admin
